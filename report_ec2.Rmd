@@ -1,0 +1,80 @@
+---
+title: 'Case Study 02: Design and Analysis of Experiments'
+author: "Matheus, Mayra, Rafael Ramos and Victor Magalhães"
+date: "September, 2019"
+output:
+  pdf_document:
+    fig_caption: yes
+  html_document:
+    df_print: paged
+---
+
+```{r setup,results='hide',warning=FALSE,echo=FALSE}
+# A few initial definitions just to make sure all required packages are installed. Change as needed.
+# NOTE: It may echo some weird messages to the PDF on the first compile (package installation messages). Run twice and the problem will (hopefully) go away.
+
+rm(list=ls())
+
+if (!require(ggplot2, quietly = TRUE)){
+      install.packages("ggplot2")
+      }
+if (!require(devtools, quietly = TRUE)){
+      install.packages("devtools")
+      }
+ if (!require(broom, quietly = TRUE)){
+       devtools::install_github("dgrtwo/broom")
+      }
+if (!require(ExpDE, quietly = TRUE)){
+      install.packages("ExpDE")
+}
+
+if (!require(EnvStats, quietly=TRUE)) {
+      install.packages("EnvStats")
+}
+
+if (!require(stats, quietly=TRUE)) {
+      install.packages("stats")
+}
+
+if (!require(boot, quietly=TRUE)) {
+      install.packages("boot")
+}
+
+library(ExpDE)
+library(ggplot2)
+library(EnvStats)
+library(stats)
+library(boot)
+
+data <- read.csv(file='CS01_20172.csv', sep=';')
+
+```
+## Resumo
+
+O experimento relacionado para este trabalho consiste em avaliar se o estilo de vida entre duas populações de estudantes se alterou ao longo do tempo. Para esta conclusão, será avaliado o índide de massa corporal (IMC) de duas amostras, uma de cada ano, que contém indivíduos do sexo masculino e feminino. As amostras serão avaliadas separadamente, para cada sexo. As hipóteses de teste levantadas são:
+
+$$
+\begin{cases}
+  H_0: \mu_{2016/2} - \mu_{2017/2} = 0 \\
+  H_0: \mu_{2016/2} - \mu_{2017/2} \neq 0
+\end{cases}
+$$
+
+Como descrito, a hipótese nula é de que a diferença das médias de IMC nos dois semestres, para uma amostra de determinado sexo, é nula. A hipótese alternativa é de que existe sim uma alteração entre as médias dos dois semestres.
+
+Como a comparação é relativa a duas amostras, e serão realizadas de forma independende para cada sexo, será realizado um teste simples entre as populações.
+
+## Papéis Desempenhados
+
+A divisão de tarefas no grupo, conforme descrito na *Declaração de Políticas de Equipe*, está organizada da seguinte forma:
+
+ - Matheus: Verificador
+ - Mayra: Monitora
+ - Rafael: Coordenador
+ - Victor: Revisor
+
+
+
+## 3. Conclusions and Recommendations
+ 
+
