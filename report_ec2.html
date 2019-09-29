@@ -1541,7 +1541,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -1670,6 +1669,34 @@ summary {
 <li>Rafael: Coordenador</li>
 <li>Victor: Revisor</li>
 </ul>
+</div>
+<div id="analise-dos-dados" class="section level2">
+<h2>Análise dos Dados</h2>
+<p>Antes de prosseguirmos com os testes de hipóteses, os dados recebidos foram processados, a fim de ajuste de formato e cálculo das variáveisd e interesse. A seguinte rotina foi utilizada:</p>
+<pre class="r"><code>PPGEE_dados=data_2016[data_2016[2]==&#39;PPGEE&#39;,];
+Dados_Masculino_2016=PPGEE_dados[PPGEE_dados[3]==&#39;M&#39;,];
+Dados_Feminino_2016=PPGEE_dados[PPGEE_dados[3]==&#39;F&#39;,];
+
+Heigh_Maculino_2016=Dados_Masculino_2016[,4];
+Heigh_Feminino_2016=Dados_Feminino_2016[,4];
+Weight_Masculino_2016=Dados_Masculino_2016[,5];
+Weight_Feminino_2016=Dados_Feminino_2016[,5];
+#Calculo do IMC para população feminina e masculina do ano de 2016.
+IMC_masculino_2016=(Weight_Masculino_2016/((Heigh_Maculino_2016)*(Heigh_Maculino_2016)));
+IMC_Feminino_2016=(Weight_Feminino_2016/((Heigh_Feminino_2016)*(Heigh_Feminino_2016)));
+####################################################################################
+Dados_Masculino_2017=data_2017[data_2017[3]==&#39;M&#39;,];
+Dados_Feminino_2017=data_2017[data_2017[3]==&#39;F&#39;,];
+
+Heigh_Maculino_2017=Dados_Masculino_2017[,2];
+Heigh_Feminino_2017=Dados_Feminino_2017[,2];
+Weight_Masculino_2017=Dados_Masculino_2017[,1];
+Weight_Feminino_2017=Dados_Feminino_2017[,1];
+
+#Calculo do IMC para popula????o feminina e masculina do ano de 2017.
+IMC_masculino_2017=(Weight_Masculino_2017/((Heigh_Maculino_2017)*(Heigh_Maculino_2017)));
+IMC_Feminino_2017=(Weight_Feminino_2017/((Heigh_Feminino_2017)*(Heigh_Feminino_2017)));</code></pre>
+<p>A comparação das amostras foi realizada de maneira independente entre cada um dos sexos.</p>
 </div>
 <div id="conclusions-and-recommendations" class="section level2">
 <h2>3. Conclusions and Recommendations</h2>

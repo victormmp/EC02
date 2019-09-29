@@ -1,6 +1,6 @@
 ---
 title: 'Case Study 02: Design and Analysis of Experiments'
-author: "Matheus, Mayra, Rafael Ramos and Victor Magalhães"
+author: "Matheus Christino Marzochi, Mayra, Rafael Ramos and Victor Magalhães"
 date: "September, 2019"
 output:
   html_document:
