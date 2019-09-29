@@ -3,10 +3,10 @@ title: 'Case Study 02: Design and Analysis of Experiments'
 author: "Matheus, Mayra, Rafael Ramos and Victor Magalhães"
 date: "September, 2019"
 output:
-  pdf_document:
-    fig_caption: yes
   html_document:
     df_print: paged
+  pdf_document:
+    fig_caption: yes
 ---
 
 ```{r setup,results='hide',warning=FALSE,echo=FALSE}
@@ -23,7 +23,8 @@ if (!require(devtools, quietly = TRUE)){
       }
  if (!require(broom, quietly = TRUE)){
        devtools::install_github("dgrtwo/broom")
-      }
+ }
+
 if (!require(ExpDE, quietly = TRUE)){
       install.packages("ExpDE")
 }
@@ -46,7 +47,10 @@ library(EnvStats)
 library(stats)
 library(boot)
 
-data <- read.csv(file='CS01_20172.csv', sep=';')
+data_2017 <- read.csv(file='CS01_20172.csv', sep=';')
+data_2016<-read.csv("imc_20162.csv");
+
+
 
 ```
 ## Resumo
@@ -73,6 +77,39 @@ A divisão de tarefas no grupo, conforme descrito na *Declaração de Políticas
  - Rafael: Coordenador
  - Victor: Revisor
 
+## Análise dos Dados
+
+Antes de prosseguirmos com os testes de hipóteses, os dados recebidos foram processados, a fim de ajuste de formato e cálculo das variáveisd e interesse. A seguinte rotina foi utilizada:
+
+```{r processamento, echo=TRUE}
+PPGEE_dados=data_2016[data_2016[2]=='PPGEE',];
+Dados_Masculino_2016=PPGEE_dados[PPGEE_dados[3]=='M',];
+Dados_Feminino_2016=PPGEE_dados[PPGEE_dados[3]=='F',];
+
+Heigh_Maculino_2016=Dados_Masculino_2016[,4];
+Heigh_Feminino_2016=Dados_Feminino_2016[,4];
+Weight_Masculino_2016=Dados_Masculino_2016[,5];
+Weight_Feminino_2016=Dados_Feminino_2016[,5];
+#Calculo do IMC para população feminina e masculina do ano de 2016.
+IMC_masculino_2016=(Weight_Masculino_2016/((Heigh_Maculino_2016)*(Heigh_Maculino_2016)));
+IMC_Feminino_2016=(Weight_Feminino_2016/((Heigh_Feminino_2016)*(Heigh_Feminino_2016)));
+####################################################################################
+Dados_Masculino_2017=data_2017[data_2017[3]=='M',];
+Dados_Feminino_2017=data_2017[data_2017[3]=='F',];
+
+Heigh_Maculino_2017=Dados_Masculino_2017[,2];
+Heigh_Feminino_2017=Dados_Feminino_2017[,2];
+Weight_Masculino_2017=Dados_Masculino_2017[,1];
+Weight_Feminino_2017=Dados_Feminino_2017[,1];
+
+#Calculo do IMC para popula????o feminina e masculina do ano de 2017.
+IMC_masculino_2017=(Weight_Masculino_2017/((Heigh_Maculino_2017)*(Heigh_Maculino_2017)));
+IMC_Feminino_2017=(Weight_Feminino_2017/((Heigh_Feminino_2017)*(Heigh_Feminino_2017)));
+
+```
+
+
+A comparação das amostras foi realizada de maneira independente entre cada um dos sexos.
 
 
 ## 3. Conclusions and Recommendations
