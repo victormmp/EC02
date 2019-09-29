@@ -87,6 +87,8 @@ data_2017 <- read.csv(file='CS01_20172.csv', sep=';')#Dados ano 2016
 data_2016<-read.csv("imc_20162.csv");#Dados ano 2017
 
 PPGEE_dados=data_2016[data_2016[2]=='PPGEE',];
+
+#Dados população feminina e masculina do ano de 2016.
 Dados_Masculino_2016=PPGEE_dados[PPGEE_dados[3]=='M',];
 Dados_Feminino_2016=PPGEE_dados[PPGEE_dados[3]=='F',];
 
@@ -95,12 +97,13 @@ Heigh_Feminino_2016=Dados_Feminino_2016[,4];
 Weight_Masculino_2016=Dados_Masculino_2016[,5];
 Weight_Feminino_2016=Dados_Feminino_2016[,5];
 
-#Calculo do IMC para população feminina e masculina do ano de 2016.
+#Calculo do IMC masculino 2016
 IMC_masculino_2016=(Weight_Masculino_2016/((Height_Masc_2016)*(Height_Masc_2016)));
+#Calculo do IMC feminino 2016
 IMC_Feminino_2016=(Weight_Feminino_2016/((Heigh_Feminino_2016)*(Heigh_Feminino_2016)));
 
 
-#Calculo do IMC para população feminina e masculina do ano de 2017.
+#Dados população feminina e masculina do ano de 2017.
 Dados_Masculino_2017=data_2017[data_2017[3]=='M',];
 Dados_Feminino_2017=data_2017[data_2017[3]=='F',];
 
@@ -120,21 +123,24 @@ IMC_Feminino_2017=(Weight_Feminino_2017/((Height_Feminino_2017)*(Height_Feminino
 
 Antes da análise estatística, os dados são avaliados de forma qualitativa na análise exploratória com o objetivo de se extrair informações úteis. Entre as ferramentas usadas para se explorar os dados existentes está o Histograma.
 
+Segue abaixo o trecho de código usado para gerar o histograma da população masculina dos anos de 2016 e 2017.
+
 ```{r histograma Masculino, echo=TRUE}
 
 p1 <- ggplot(as.data.frame(IMC_masculino_2016), aes(x = IMC_masculino_2016))
-p1 <- p1 +geom_histogram(bins = 15)
+p1 <- p1 +geom_histogram(bins = 15)+xlab("IMC Masculino 2016")+ylab("Nº de observações")
 p2 <- ggplot(as.data.frame(IMC_masculino_2017), aes(x = IMC_masculino_2017))
-p2 <- p2 + geom_histogram(bins = 15)
+p2 <- p2 + geom_histogram(bins = 15)+xlab("IMC Masculino 2017")+ylab("Nº de observações")
 ggarrange(p1, p2, nrow = 1, ncol = 2)
 ```
 
+Segue abaixo o trecho de código usado para gerar o histograma da população feminina dos anos de 2016 e 2017.
 ```{r histograma Feminino, echo=TRUE}
 
 p1 <- ggplot(as.data.frame(IMC_Feminino_2016), aes(x = IMC_Feminino_2016))
-p1 <- p1 +geom_histogram(bins = 8)
+p1 <- p1 +geom_histogram(bins = 8)+xlab("IMC Feminino 2016")+ylab("Nº de observações")
 p2 <- ggplot(as.data.frame(IMC_Feminino_2017), aes(x = IMC_Feminino_2017))
-p2 <- p2 + geom_histogram(bins = 8)
+p2 <- p2 + geom_histogram(bins = 8)+xlab("IMC Feminino 2017")+ylab("Nº de observações")
 ggarrange(p1, p2, nrow = 1, ncol = 2)
 
 ```
