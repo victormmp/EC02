@@ -37,14 +37,15 @@ if (!require(boot, quietly=TRUE)) {
       install.packages("boot")
 }
 
+if (!require(ggpubr, quietly=TRUE)) {
+      install.packages("ggpubr")
+}
+
 library(ExpDE)
 library(ggplot2)
 library(stats)
 library(boot)
-
-data_2017 <- read.csv(file='CS01_20172.csv', sep=';')
-data_2016<-read.csv("imc_20162.csv");
-
+library(ggpubr)
 
 
 ```
@@ -74,46 +75,73 @@ $$
 \end{cases}
 $$
 
-Como a comparação é relativa a duas amostras em função da influência do gênero no valor do IMC, as análises são realizadas de forma independente para cada sexo. Como consequência dessa independência, neste trabalho são realizados testes de comparação simples entre as populações.
+Como a comparação é relativa a duas amostras, em função da influência do gênero no valor do IMC, as análises são realizadas de forma independente para cada sexo. Como consequência dessa independência, neste trabalho são realizados testes de comparação simples entre as populações.
 
 ## Coleta dos Dados
 
-## Análise dos Dados
+O procedimento de coleta de dados foi baseado na rotina presente abaixo.
 
-Antes de prosseguirmos com os testes de hipóteses, os dados recebidos foram processados, a fim de ajuste de formato e cálculo das variáveisd e interesse. A seguinte rotina foi utilizada:
+```{r, echo=TRUE}
 
-```{r processamento, echo=TRUE}
+data_2017 <- read.csv(file='CS01_20172.csv', sep=';')#Dados ano 2016
+data_2016<-read.csv("imc_20162.csv");#Dados ano 2017
+
 PPGEE_dados=data_2016[data_2016[2]=='PPGEE',];
 Dados_Masculino_2016=PPGEE_dados[PPGEE_dados[3]=='M',];
 Dados_Feminino_2016=PPGEE_dados[PPGEE_dados[3]=='F',];
 
-Heigh_Maculino_2016=Dados_Masculino_2016[,4];
+Height_Masc_2016=Dados_Masculino_2016[,4];
 Heigh_Feminino_2016=Dados_Feminino_2016[,4];
 Weight_Masculino_2016=Dados_Masculino_2016[,5];
 Weight_Feminino_2016=Dados_Feminino_2016[,5];
+
 #Calculo do IMC para população feminina e masculina do ano de 2016.
-IMC_masculino_2016=(Weight_Masculino_2016/((Heigh_Maculino_2016)*(Heigh_Maculino_2016)));
+IMC_masculino_2016=(Weight_Masculino_2016/((Height_Masc_2016)*(Height_Masc_2016)));
 IMC_Feminino_2016=(Weight_Feminino_2016/((Heigh_Feminino_2016)*(Heigh_Feminino_2016)));
-####################################################################################
+
+
+#Calculo do IMC para população feminina e masculina do ano de 2017.
 Dados_Masculino_2017=data_2017[data_2017[3]=='M',];
 Dados_Feminino_2017=data_2017[data_2017[3]=='F',];
 
-Heigh_Maculino_2017=Dados_Masculino_2017[,2];
-Heigh_Feminino_2017=Dados_Feminino_2017[,2];
-Weight_Masculino_2017=Dados_Masculino_2017[,1];
+Height_Masculino_2017=Dados_Masculino_2017[,2];
+Height_Feminino_2017=Dados_Feminino_2017[,2];
+Weight_Masc_2017=Dados_Masculino_2017[,1];
 Weight_Feminino_2017=Dados_Feminino_2017[,1];
 
-#Calculo do IMC para popula????o feminina e masculina do ano de 2017.
-IMC_masculino_2017=(Weight_Masculino_2017/((Heigh_Maculino_2017)*(Heigh_Maculino_2017)));
-IMC_Feminino_2017=(Weight_Feminino_2017/((Heigh_Feminino_2017)*(Heigh_Feminino_2017)));
+#Calculo do IMC masculino 2017
+IMC_masculino_2017=(Weight_Masc_2017/((Height_Masculino_2017)*(Height_Masculino_2017)));
+#Calculo do IMC feminino 2017
+IMC_Feminino_2017=(Weight_Feminino_2017/((Height_Feminino_2017)*(Height_Feminino_2017)));
 
 ```
 
+## Análise Exploratória dos Dados
 
-A comparação das amostras foi realizada de maneira independente entre cada um dos sexos.
+Antes da análise estatística, os dados são avaliados de forma qualitativa na análise exploratória com o objetivo de se extrair informações úteis. Entre as ferramentas usadas para se explorar os dados existentes está o Histograma.
 
+```{r histograma Masculino, echo=TRUE}
 
-## 3. Conclusions and Recommendations
+p1 <- ggplot(as.data.frame(IMC_masculino_2016), aes(x = IMC_masculino_2016))
+p1 <- p1 +geom_histogram(bins = 15)
+p2 <- ggplot(as.data.frame(IMC_masculino_2017), aes(x = IMC_masculino_2017))
+p2 <- p2 + geom_histogram(bins = 15)
+ggarrange(p1, p2, nrow = 1, ncol = 2)
+```
+
+```{r histograma Feminino, echo=TRUE}
+
+p1 <- ggplot(as.data.frame(IMC_Feminino_2016), aes(x = IMC_Feminino_2016))
+p1 <- p1 +geom_histogram(bins = 8)
+p2 <- ggplot(as.data.frame(IMC_Feminino_2017), aes(x = IMC_Feminino_2017))
+p2 <- p2 + geom_histogram(bins = 8)
+ggarrange(p1, p2, nrow = 1, ncol = 2)
+
+```
+
+## Análise estatística
+
+## Conclusões
  
 ## Bibliografia
 
