@@ -41,7 +41,7 @@ if (!require(ggpubr, quietly=TRUE)) {
       install.packages("ggpubr")
 }
 
-knitr::opts_chunk$set(fig.width=6, fig.height=4) 
+# knitr::opts_chunk$set(fig.width=6, fig.height=4) 
 
 if (!require(GGally, quietly = TRUE)){
       install.packages("GGally")
@@ -77,7 +77,6 @@ if (!require(effsize, quietly = TRUE)){
   install.packages("effsize")
 }
 
-library(boot)
 
 library(ExpDE)
 library(ggplot2)
@@ -183,9 +182,9 @@ ggarrange(p1, p2, nrow = 1, ncol = 2)
 
 ```
 
-Através da análise exploratória dos dados é possível observar que o número de amostras fornecidos é pequeno, especialmente no caso feminino. Para a população masculina apesar do número de amostras não ser elevado, a distribuição das amostras leva há indícios que a distribuição pode ser normal. No caso feminino há indícios de que seja necessário o uso de estatística não paramétrica. Essas hipótes são analisadas mais profundamente na análise estatística.
+Através da análise exploratória dos dados é possível observar que o número de amostras fornecidos é pequeno, especialmente no caso feminino. Para a população masculina apesar do número de amostras não ser elevado, a distribuição das amostras leva à indícios que a distribuição pode ser normal. No caso feminino há indícios de que seja necessário o uso de estatística não paramétrica, uma vez que pode haver não normalidade. Essas hipótes são analisadas mais profundamente na análise estatística.
 
-A seguir temos outra análise estatística dos dados. Leva-se em consideração também gênero e ano amostral. Esta análise é feita a partir de uma série de gráficos do tipo _boxplot_.  
+A seguir temos outra análise dos dados. Leva-se em consideração também gênero e ano amostral. Esta análise é feita a partir de uma série de gráficos do tipo _boxplot_.  
 
 
 ```{r boxplot1,fig.height=3.5,fig.width=6,echo=TRUE,message=FALSE, fig.cap = "BoxPlot da Amostra das Sub-Populações de 2016"}
@@ -206,21 +205,20 @@ names = c("Feminino 2017-2","Masculino 2017-2"))
 ``` 
 
 
-No caso dos dados do semestre 2017-2, *outliers* não são observados. Porém, um ponto importante a ser ressaltado é a elevada assimetria na sub-população feminina, o que pode ser causa do baixo número de amostras. Na verdade, o _boxplot_ não é um gráfico adequado para se fazer inferências com esse número de amostras. 
+No caso dos dados do semestre 2017-2, *outliers* não são observados. Porém, um ponto importante a ser ressaltado é a elevada assimetria na sub-população feminina, o que pode ser causada pelo baixo número de amostras. Na verdade, o _boxplot_ não é um gráfico adequado para se fazer inferências com esse número de amostras. 
 
 
 ### Análise dos Dados Experimentais Femininos
 
-
-Conforme indicado anteriormente, a seguir estão apresentadas as análises dos dados femininos de 2016 e 2017.
-
 #### Teste de Hipótese
 
-Ao dividir a população em sub-populações, masculino e feminino, fica clara a necessidade de considerar uma hipótese nula para cada gênero e comparar os conjuntos de dados. Não há motivos para acreditar que exista uma diferença específica entre as duas populações, e o que deseja-se verificar é a existência de alguma diferença considerável entre as médias de IMC entre os anos. As hipóteses nulas foram definidas como uma diferença entre as médias das populações igual a 0.
+Conforme dito anteriormente, ao dividir a população em sub-populações, masculino e feminino, fica clara a necessidade de considerar uma hipótese nula para cada gênero e comparar os conjuntos de dados. Não há motivos para acreditar que exista uma diferença específica entre as duas populações, e o que deseja-se verificar é a existência de alguma diferença considerável entre as médias de IMC entre os anos. As hipóteses nulas foram definidas como uma diferença entre as médias das populações igual a 0.
 
 Considerando os argumentos acima, a hipótese, para o caso feminino, está descritas a seguir:
 
-$$\begin{cases} {H}_{f0}: {\mu}_{f,2016} -{\mu}_{f,2017} = 0 &\\{H}_{f1}: {\mu}_{f,2016} -{\mu}_{f,2017} \neq 0 \end{cases}$$
+$$
+  \begin{cases} {H}_{f0}: {\mu}_{f,2016} -{\mu}_{f,2017} = 0 &\\{H}_{f1}: {\mu}_{f,2016} -{\mu}_{f,2017} \neq 0 \end{cases}
+$$
 
 Com a finalidade de averiguar a normalidade de cada uma delas, tem-se: 
 
