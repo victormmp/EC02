@@ -3,10 +3,10 @@ title: 'Estudo de Caso 2: Planejamento e Análise de Experimentos'
 author: "Matheus Marzochi, Mayra Mota, Rafael Ramos e Victor Magalhães"
 date: "30 de Setembro de 2019"
 output:
-  pdf_document:
-    fig_caption: yes
   html_document:
     df_print: paged
+  pdf_document:
+    fig_caption: yes
 ---
 
 ```{r setup,results='hide',warning=FALSE,echo=FALSE}
@@ -41,6 +41,44 @@ if (!require(ggpubr, quietly=TRUE)) {
       install.packages("ggpubr")
 }
 
+knitr::opts_chunk$set(fig.width=6, fig.height=4) 
+
+if (!require(GGally, quietly = TRUE)){
+      install.packages("GGally")
+}
+
+if (!require(car, quietly = TRUE)){
+      install.packages("car")
+}
+
+if (!require(samplesize, quietly = TRUE)){
+      install.packages("samplesize")
+}
+
+if (!require(pwr, quietly = TRUE)){
+      install.packages("pwr")
+}
+if (!require(boot, quietly = TRUE)){
+      install.packages("boot")
+}
+if (!require(ggpubr, quietly = TRUE)){
+  install.packages("ggpubr")
+}
+if (!require(simpleboot, quietly = TRUE)){
+  install.packages("simpleboot")
+}
+if (!require(dplyr, quietly = TRUE)){
+  install.packages("dplyr")
+}
+ if (!require(broom, quietly = TRUE)){
+  devtools::install_github("dgrtwo/broom")
+}
+if (!require(effsize, quietly = TRUE)){
+  install.packages("effsize")
+}
+
+library(boot)
+
 library(ExpDE)
 library(ggplot2)
 library(stats)
@@ -53,7 +91,7 @@ library(ggpubr)
 
 O experimento disponibilizado para este trabalho consiste em avaliar se o estilo de vida entre duas populações de estudantes se alterou ao longo do tempo. Nessa avaliação duas amostras foram utilizadas, uma contendo informações (peso e altura dos alunos) referentes ao ano de 2016 e a outra com informações referentes a 2017.
 
-Neste trabalho o IMC (Índice de Massa Corporal) é usado como parâmetro de avaliação do estilo de vida. Vale ressaltar que esse indicador possui limitações como pode ser verificado em [1][2]. Além disso, as duas populações foram subdivididas por gênero. A motivação desta divisão é a consideração de que, em média, o IMC masculino pode ser diferente do feminino.
+Neste trabalho o IMC (Índice de Massa Corporal) é usado como parâmetro de avaliação do estilo de vida. Vale ressaltar que esse indicador possui limitações como pode ser verificado em [@NyTimes][@Science]. Além disso, as duas populações foram subdivididas por gênero. A motivação desta divisão é a consideração de que, em média, o IMC masculino pode ser diferente do feminino.
 
 ## Papéis Desempenhados
 
@@ -144,16 +182,142 @@ p2 <- p2 + geom_histogram(bins = 8)+xlab("IMC Feminino 2017")+ylab("Nº de obser
 ggarrange(p1, p2, nrow = 1, ncol = 2)
 
 ```
+
 Através da análise exploratória dos dados é possível observar que o número de amostras fornecidos é pequeno, especialmente no caso feminino. Para a população masculina apesar do número de amostras não ser elevado, a distribuição das amostras leva há indícios que a distribuição pode ser normal. No caso feminino há indícios de que seja necessário o uso de estatística não paramétrica. Essas hipótes são analisadas mais profundamente na análise estatística.
 
+A seguir temos outra análise estatística dos dados. Leva-se em consideração também gênero e ano amostral. Esta análise é feita a partir de uma série de gráficos do tipo _boxplot_.  
 
-## Análise estatística
+
+```{r boxplot1,fig.height=3.5,fig.width=6,echo=TRUE,message=FALSE, fig.cap = "BoxPlot da Amostra das Sub-Populações de 2016"}
+boxplot(IMC_Feminino_2016,IMC_masculino_2016,
+names = c("Feminino","Masculino"))
+```
+
+A primeira informação que temos, observando o primeiro gráfico, é a grande diferença entre a média do IMC entre os alunos do sexo feminino e masculino, reforçando a ideia de trabalhar com sub-populações para diminuir resíduos e aumentar a potência dos testes.
+ 
+Outro ponto é em relação à distribuição das observações. Note-se uma certa simetria para a sub-população masculina e uma pequena assimetria para a feminina. Isso parece não comprometer a premissa de normalidade da população. 
+
+Além disso, observa-se um *outlier* na sub-população masculina, que pode afetar a verificação da Premissa da Normalidade e de inferências sobre o parâmetro avaliado. Já para o caso feminino, isso não ocorre.
+
+
+```{r boxplot2,fig.height=3.5,fig.width=6,echo=TRUE,message=FALSE,  fig.cap = "BoxPlot das Amostra das Sub-Populações 2017"}
+boxplot(IMC_Feminino_2017,IMC_masculino_2017,
+names = c("Feminino 2017-2","Masculino 2017-2"))
+``` 
+
+
+No caso dos dados do semestre 2017-2, *outliers* não são observados. Porém, um ponto importante a ser ressaltado é a elevada assimetria na sub-população feminina, o que pode ser causa do baixo número de amostras. Na verdade, o _boxplot_ não é um gráfico adequado para se fazer inferências com esse número de amostras. 
+
+
+### Análise dos Dados Experimentais Femininos
+
+
+Conforme indicado anteriormente, a seguir estão apresentadas as análises dos dados femininos de 2016 e 2017.
+
+#### Teste de Hipótese
+
+Ao dividir a população em sub-populações, masculino e feminino, fica clara a necessidade de considerar uma hipótese nula para cada gênero e comparar os conjuntos de dados. Não há motivos para acreditar que exista uma diferença específica entre as duas populações, e o que deseja-se verificar é a existência de alguma diferença considerável entre as médias de IMC entre os anos. As hipóteses nulas foram definidas como uma diferença entre as médias das populações igual a 0.
+
+Considerando os argumentos acima, a hipótese, para o caso feminino, está descritas a seguir:
+
+$$\begin{cases} {H}_{f0}: {\mu}_{f,2016} -{\mu}_{f,2017} = 0 &\\{H}_{f1}: {\mu}_{f,2016} -{\mu}_{f,2017} \neq 0 \end{cases}$$
+
+Com a finalidade de averiguar a normalidade de cada uma delas, tem-se: 
+
+```{r out.width="300px", fig.align="center"}
+#Feminino - 2016
+K <- 999
+boot.means <- numeric(K)
+for (i in seq(K)){
+  boot.sample_2016 <- sample(IMC_Feminino_2016, replace = TRUE) # sample with replacement
+  boot.means[i] <- mean(boot.sample_2016)
+}
+
+qqPlot(boot.means, las = 1, pch = 16)
+qqline(boot.means)
+
+# Feminin0 - 2017
+for (i in seq(K)){
+  boot.sample_2017 <- sample(IMC_Feminino_2017, replace = TRUE) # sample with replacement
+  boot.means[i] <- mean(boot.sample_2017)
+}
+
+qqPlot(boot.means, las = 1, pch = 16)
+qqline(boot.means)
+```
+
+Nota-se que a segunda amostra do dados femininos possui uma forte tendência a não normalidade. Aplica-se o teste Shapiro-Wilk para a certificação:
+
+```{r}
+(shapiro.test(IMC_Feminino_2016))
+(shapiro.test(IMC_Feminino_2017))
+```
+
+A amostra de 2016, claramente, segue uma distribuição normal. Assim, pode-se utilizar a mesma análise feita na amostra masculina. Já as amostras de 2017 não seguem uma normal.
+
+Segundo [@Montgomery2012], o teste de Wilcoxon-Mann-Whitney é válido para duas amostras coletadas de distribuições de mesma forma. Esse é um teste não paramétrico para duas amostras independentes que não considera premissa de normalidade. Como na análise feita anteriormente não pode-se afirmar o atendimento dessa condição, o teste não pode ser utilizado. Logo, a análise do intervalo de confiança pela técnica de *bootstrap* foi excolhida. 
+
+O método cria um intervalo de confiança que é verificado e, a partir daí, concluir sobre a rejeição ou não da hipótese nula. Se o intervalo de confiança contiver o valor da variável de interesse sob $H_0$ ($\mu_1 - \mu_2 = 0$), não tem rejeição da hipótese nula.
+
+```{r}
+alpha <- 0.05
+IntConf <- two.boot(IMC_Feminino_2016, IMC_Feminino_2017, mean, R = 999)
+boot.ci(IntConf, conf = 1-alpha, type = "bca")
+```
+
+
+Acima, pode-se observar o resultado do cálculo do intervalo de confiança utilizando a técnica de *bootstrap*. Uma vez que o zero não está contido no intervalo de confiança da média, a hipótese nula é rejeitada. Nas amostras femininas, os IMCs médios são diferentes, $\mu_1 \neq \mu_2$.
+
+### Discussão para Melhoria do Experimento 
+
+De acordo com [@Ministerio], o cálculo de IMC é feito para adultos em geral sem diferenciação de sexo. A primeira sugestão seria a realização da coleta dos dados em outros períodos, ou seja, a coleta de amostras muito maiores, aumentando, assim, a potência dos testes. Os valores de altura e peso em média são distintos para homens e mulheres, porém com a vantagem de amostras maiores, a análise geral poderia ser feita.
+
+Além disso, para que os dados coletados apresentem melhor veracidade, aconselha-se a utilização de instrumentos adequados para medição de altura e peso das sub-populações. Assim, pode-se minimizar os erros de coleta. 
+
+Uma outra sugestão seria a realização de análises levando em consideração a idade, já que, de acordo com essa característica, há uma grande tendência ao aumento de peso. Além disso, informações como prática de exercícios e alimentação saudável seriam também relevantes para um estudo mais detalhado de sub-populações.  
+
 
 ## Conclusões
- 
-## Bibliografia
 
-[1] https://www.nytimes.com/interactive/projects/cp/summer-of-science-2015/latest/how-often-is-bmi-misleading
+### Conclusões sobre a Análise Feminina
 
-[2] https://science.sciencemag.org/content/341/6148/856.summary
+A ideia do estudo era comparar duas amostras diferentes. Situações com observações não normais e com poucas amostras foram notadas. De acordo com gráficos e testes, concluiu-se que uma das amostras femininas não pode ser considerada normal e houve a necessidade de uma análise alternativa. O maior problema, aparentemente, das amostras femininas foi o baixo número de observações, dificultando a conclusão das características da distribuição populacional. Com mais amostras, a análise de 2017 poderia apresentar uma tendência a assemelhar-se com uma normal, uma vez que as amostras Masculinas e Feminina-2016 apresentaram características de normalidade. O teste de potencia também é interferido com o baixo tamanho amostral.
 
+
+## Referências
+
+---
+references:
+- id: NyTimes
+  title: How Often Is B.M.I. Misleading? 
+  URL: https://www.nytimes.com/interactive/projects/cp/summer-of-science-2015/latest/how-often-is-bmi-misleading
+  issued:
+    year: 2015
+    
+- id: Science
+  title: The Health Risk of Obesity—Better Metrics Imperative
+  URL: https://science.sciencemag.org/content/341/6148/856.summary
+  issued:
+    year: 2013
+  
+- id: Montgomery2012
+  title: Estatística Aplicada e Probabilidade para Engenheiros
+  author:
+  - family: Montgomery
+    given: Douglas
+  - family: Runger
+    given: George
+  publisher: LTC
+  type: book
+  issued:
+    year: 2012
+    
+- id: Ministerio
+  title: IMC em Adultos
+  author:
+  - family: Ministério da Saúde
+    given: 
+  URL: 'http://portalms.saude.gov.br/component/content/article/804-imc/40509-imc-em-adultos'
+  issued:
+    year: 2017
+---
