@@ -214,7 +214,7 @@ No caso dos dados do semestre 2017-2, *outliers* não são observados. Porém, u
 
 Conforme dito anteriormente, ao dividir a população em sub-populações, masculino e feminino, fica clara a necessidade de considerar uma hipótese nula para cada gênero e comparar os conjuntos de dados. Não há motivos para acreditar que exista uma diferença específica entre as duas populações, e o que deseja-se verificar é a existência de alguma diferença considerável entre as médias de IMC entre os anos. As hipóteses nulas foram definidas como uma diferença entre as médias das populações igual a 0.
 
-Considerando os argumentos acima, a hipótese, para o caso feminino, está descritas a seguir:
+Considerando os argumentos acima, a hipótese, para o caso feminino, está descrita a seguir:
 
 $$
   \begin{cases} {H}_{f0}: {\mu}_{f,2016} -{\mu}_{f,2017} = 0 &\\{H}_{f1}: {\mu}_{f,2016} -{\mu}_{f,2017} \neq 0 \end{cases}
@@ -251,11 +251,9 @@ Nota-se que a segunda amostra do dados femininos possui uma forte tendência a n
 (shapiro.test(IMC_Feminino_2017))
 ```
 
-A amostra de 2016, claramente, segue uma distribuição normal. Assim, pode-se utilizar a mesma análise feita na amostra masculina. Já as amostras de 2017 não seguem uma normal.
+A amostra de 2016, claramente, segue uma distribuição normal. Assim, pode-se utilizar um teste T para análise das hipóteses. Já as amostras de 2017 não seguem uma normal.
 
-Segundo [@Montgomery2012], o teste de Wilcoxon-Mann-Whitney é válido para duas amostras coletadas de distribuições de mesma forma. Esse é um teste não paramétrico para duas amostras independentes que não considera premissa de normalidade. Como na análise feita anteriormente não pode-se afirmar o atendimento dessa condição, o teste não pode ser utilizado. Logo, a análise do intervalo de confiança pela técnica de *bootstrap* foi excolhida. 
-
-O método cria um intervalo de confiança que é verificado e, a partir daí, concluir sobre a rejeição ou não da hipótese nula. Se o intervalo de confiança contiver o valor da variável de interesse sob $H_0$ ($\mu_1 - \mu_2 = 0$), não tem rejeição da hipótese nula.
+Segundo [@Montgomery2012], a análise do intervalo de confiança foi relizado pela técnica de *bootstrap*. O método cria um intervalo de confiança que é verificado e, a partir daí, conclui sobre a rejeição ou não da hipótese nula. Se o intervalo de confiança contiver o valor da variável de interesse sob $H_0$ ($\mu_1 - \mu_2 = 0$), não tem rejeição da hipótese nula.
 
 ```{r}
 alpha <- 0.05
@@ -280,6 +278,8 @@ Uma outra sugestão seria a realização de análises levando em consideração 
 ### Conclusões sobre a Análise Feminina
 
 A ideia do estudo era comparar duas amostras diferentes. Situações com observações não normais e com poucas amostras foram notadas. De acordo com gráficos e testes, concluiu-se que uma das amostras femininas não pode ser considerada normal e houve a necessidade de uma análise alternativa. O maior problema, aparentemente, das amostras femininas foi o baixo número de observações, dificultando a conclusão das características da distribuição populacional. Com mais amostras, a análise de 2017 poderia apresentar uma tendência a assemelhar-se com uma normal, uma vez que as amostras Masculinas e Feminina-2016 apresentaram características de normalidade. O teste de potencia também é interferido com o baixo tamanho amostral.
+
+Como a hipótese nula foi rejeitada, podemos admitir a hipótese alternativa de que houve, sim, uma mudança da qualidade de vida dos estudantes entre os dois períodos analisados.
 
 
 ## Referências
