@@ -144,6 +144,8 @@ p2 <- p2 + geom_histogram(bins = 8)+xlab("IMC Feminino 2017")+ylab("Nº de obser
 ggarrange(p1, p2, nrow = 1, ncol = 2)
 
 ```
+Através da análise exploratória dos dados é possível observar que o número de amostras fornecidos é pequeno, especialmente no caso feminino. Para a população masculina apesar do número de amostras não ser elevado, a distribuição das amostras leva há indícios que a distribuição pode ser normal. No caso feminino há indícios de que seja necessário o uso de estatística não paramétrica. Essas hipótes são analisadas mais profundamente na análise estatística.
+
 
 ## Análise estatística
 
