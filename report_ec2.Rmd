@@ -306,8 +306,6 @@ Como a hipótese nula foi rejeitada, podemos admitir a hipótese alternativa de 
 ### Conclusões sobre a Análise Masculina
 Quanto as amostras masculinas podemos concluir que não houve variação significativa no IMC da população de 2016 para 2017, dado que as amostras possuiam indicativo de normalidade e o teste T não rejeitou a hipótese nula. 
 
-Além disso, no caso da população masculina, não seria de grande valia o cálculo da potência uma vez que falhamos em rejeitar a hipótese nula.
-
 
 ## Referências
 
