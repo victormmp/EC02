@@ -1,0 +1,12 @@
+
+Diante desses resultados, faz-se nescessário o cálculo da potência, estimando-se o erro de tipo II. Utilizamos o efeito d de cohen para o cálculo do efeito, já que estamos comparando duas populações.Assim, temos que:
+
+```{r}
+d_C_masculino=cohen.d(IMC_masculino_2016,IMC_masculino_2017)
+```
+
+Caculando a potência por meio do teste T, temos que: 
+```{r}
+power.t.test(n=length(IMC_masculino_2016+IMC_masculino_2017), delta = d_C_masculino$estimate ,sd=sqrt(0.18),sig.level =0.05, type="two.sample",alternative = "two.sided")
+```
+Nesse caso a potência encontrada é de 0.23.
