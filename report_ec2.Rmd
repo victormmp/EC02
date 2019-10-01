@@ -283,7 +283,7 @@ Dado o p-valor do teste, pode-se assumir que não podemos rejeitar a hipótese n
 t.test(IMC_masculino_2016,IMC_masculino_2017, alternative='two.sided',mu=0, paired=FALSE,conf.level = 0.95);
 ```
 
-Tendo em vista a proximidade das médias(IMC_masculino_2016=24.93 e IMC_masculino_2017=24.28), o tamanho do efeito(df=38.05) e o p-valor=0.59(maior que a significncia de 0.05), não se pode rejeitar a hipótese nula de que as populações tem diferença de médias igual à 0.
+Tendo em vista a proximidade das médias(IMC_masculino_2016=24.93 e IMC_masculino_2017=24.28), o tamanho do efeito(df=38.05) e o p-valor=0.59(maior que a significncia de 0.05), não se pode rejeitar a hipótese nula de que as populações tem diferença de médias igual à 0. No caso, vale destacar que o valor estimado de intervalo de confiança foi de -1.78 até 3.08.
 
 
 ### Discussão para Melhoria do Experimento 
@@ -304,7 +304,9 @@ A ideia do estudo era comparar duas amostras diferentes. Situações com observa
 Como a hipótese nula foi rejeitada, podemos admitir a hipótese alternativa de que houve, sim, uma mudança da qualidade de vida dos estudantes entre os dois períodos analisados.
 
 ### Conclusões sobre a Análise Masculina
-Quanto as amostras masculinas podemos concluir que não houve variação significativa no IMC da população de 2016 para 2017, dado que as amostras possuiam indicativo de normalidade e o teste T não rejeitou a hipótese nula.
+Quanto as amostras masculinas podemos concluir que não houve variação significativa no IMC da população de 2016 para 2017, dado que as amostras possuiam indicativo de normalidade e o teste T não rejeitou a hipótese nula. 
+
+Além disso, no caso da população masculina, não seria de grande valia o cálculo da potência uma vez que falhamos em rejeitar a hipótese nula.
 
 
 ## Referências
